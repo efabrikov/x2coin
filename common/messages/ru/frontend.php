@@ -2,7 +2,7 @@
 return [
     'Submit' => 'Отправить',
     'Your account has been successfully saved' => 'Ваш аккаунт был успешно сохранен',
-    'About' => 'О нас 2',
+    'About' => 'О нас',
     'Account' => 'Аккаунт',
     'Articles' => 'Статьи',
     'Attachments' => 'Приложения',
