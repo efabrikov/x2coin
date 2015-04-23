@@ -16,6 +16,11 @@ use backend\models\Investment;
  *           ]
  *       ];
  *   }
+ *
+ * in view:
+ *
+ * echo frontend\components\widgets\investment_ajax_table\InvestmentAjaxTable::widget()
+ *
  * Return a ajex table based on investment db table 
  */
 class InvestmentAjaxTable extends \yii\base\Widget

@@ -1,6 +1,6 @@
 <?php
 $config = [
-    'name'=>'Yii2 Starter Kit',
+    'name'=>'x2coin',
     'vendorPath'=>dirname(dirname(__DIR__)).'/vendor',
     'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
     'sourceLanguage'=>'en-US',
@@ -113,6 +113,10 @@ $config = [
             'class' => 'common\components\keyStorage\KeyStorage'
         ],
 
+        'blockchain' => [
+            'class' => 'common\components\api\BlockchainService'
+        ],
+
         'urlManagerBackend' => \yii\helpers\ArrayHelper::merge(
             [
                 'hostInfo' => Yii::getAlias('@backendUrl')
@@ -140,6 +144,8 @@ $config = [
             'ru-RU'=>'Русский (РФ)',
             'uk-UA'=>'Українська (Україна)'
         ],
+        'blockchainId' => '42365889-604d-4912-b30c-c596a017b690',
+        'blockchainPassword' => 'EXiFIvuPOnJdbgERYK4N'
     ],
 ];
 
