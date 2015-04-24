@@ -29,7 +29,7 @@ class BlockchainService extends Object
             );
     }
 
-    public function getAdresses()
+    public function getAddresses()
     {
         return $this->_blockchain->Wallet->getAddresses();
     }
@@ -39,14 +39,12 @@ class BlockchainService extends Object
          return $this->_blockchain->Wallet->getNewAddress($label);
     }
 
-    public function getAddress($addr)
+    public function getAddress($addr, $limit = 50, $offset = 0)
     {
         //$address = '1K1jYPfk6QihBCg7p4nAX5NSNtiUTpKzWo';
         //$address = '1DgxiXnGRubcpDPT5kpEhA1bX3QAY3v7s8';
         //$address = '16M3dNecXzRCrVqkXt4DyzPWBhNLMHA2zz';
-
-        $limit = 50;
-        $offset = 0;
+        
         return $this->_blockchain
             ->Explorer->getAddress($addr, $limit, $offset);
     }

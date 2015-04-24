@@ -4,7 +4,7 @@ $config = [
     'vendorPath'=>dirname(dirname(__DIR__)).'/vendor',
     'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
     'sourceLanguage'=>'en-US',
-    'language'=>'en-US',
+    'language'=>'en-US',    
     'bootstrap' => ['log'],
     'components' => [
 
@@ -21,7 +21,8 @@ $config = [
         ],
 
         'formatter'=>[
-            'class'=>'yii\i18n\Formatter'
+            'class'=>'yii\i18n\Formatter',
+            'timeZone' => 'Europe/Kiev',
         ],
 
         'glide' => [
@@ -144,8 +145,10 @@ $config = [
             'ru-RU'=>'Русский (РФ)',
             'uk-UA'=>'Українська (Україна)'
         ],
-        'blockchainId' => '42365889-604d-4912-b30c-c596a017b690',
-        'blockchainPassword' => 'EXiFIvuPOnJdbgERYK4N'
+        'blockchainId' => getenv('ADMIN_BLOCKCHAIN_ID'),
+        'blockchainPassword' => getenv('ADMIN_BLOCKCHAIN_PASSWORD'),
+        'bitcoinDefaultDelayTime' => '28800', //8hours
+        'bitcoinDefaultRate' => 2
     ],
 ];
 

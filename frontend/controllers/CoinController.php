@@ -10,16 +10,29 @@ class CoinController extends \yii\web\Controller
 {
 
     public function actionIndex()
-    {
-        $_GET['sort'] = '-id';
+    {        
+        //process bitcoin
+        $cwa = Yii::$app->request->post('cwa_bitcoin');
+        if (!empty($cwa)) {            
+            $this->processBitcoin($cwa);
+        }
+
+        //process dogecoin
+        $cwa = Yii::$app->request->post('cwa_dogecoin');
+        if (!empty($cwa)) {
+            Yii::$app->getSession()->setFlash('alert', [
+                'body'    => Yii::t('frontend', "Not implemented yet."),
+                'options' => ['class' => 'alert-warning']
+                ]
+            );
+        }
+
+        if (!Yii::$app->request->get('sort',0)) {
+            $_GET['sort'] = '-id';
+        }
+        
         $searchModel  = new InvestmentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        $cwa = Yii::$app->request->post('cwa');
-        if (!empty($cwa)) {
-            $swa = $this->_getSwaFromApi($cwa);
-            $this->_saveSwaToDb($cwa, $swa);
-        }
 
         return $this->render('index',
                 [
@@ -28,7 +41,12 @@ class CoinController extends \yii\web\Controller
         ]);
     }
 
-    private function _getSwaFromApi($cwa)
+    /**
+     *
+     * @param string $cwa
+     * @return obj $swa
+     */
+    private function processBitcoin($cwa)
     {   
         $swa = Yii::$app->blockchain->getNewAddress($cwa);
         //[balance] => [address] => 1CTUApmGd92fQGZKaqxvxvVRKTXW1NYXwr [label] => ssss [total_received] => )
@@ -37,7 +55,7 @@ class CoinController extends \yii\web\Controller
             Yii::$app->getSession()->setFlash('alert',
             [
             'body'    => Yii::t('frontend',
-                "Well done! Your personal wallet adress {$swa->address}. Send money from your coin control pannel and we will double them"),
+                "Well done! Your personal wallet adress: <b> {$swa->address} </b>. Send money from your coin control pannel and we will double them"),
             'options' => ['class' => 'alert-success']
             ]
         );
@@ -47,7 +65,7 @@ class CoinController extends \yii\web\Controller
             [
             'body'    => Yii::t('frontend',
                 "Service not aviable."),
-            'options' => ['class' => 'alert-fail']
+            'options' => ['class' => 'alert-warning']
             ]
         );
         }
@@ -55,19 +73,18 @@ class CoinController extends \yii\web\Controller
         return $swa;
     }
 
-    private function _saveSwaToDb($cwa, $swa)
+    public function actionInvestmentView($address)
     {
-        $model = new Investment();
-        $model->cwa = $cwa;
-        $model->swa = $swa->address;
-        $model->save();
+        if (empty($address)) {
+            throw new NotFoundHttpException('Address can not be blank.');
+        }
 
-        return $model;
-    }
+        $model = Yii::$app->blockchain->getAddress($address);
+        
+        if (empty($model->address)) {
+            throw new NotFoundHttpException('The requested address does not exist.');
+        }
 
-    public function actionTest()
-    {
-        \yii\helpers\VarDumper::dump(Yii::$app->blockchain->getAdresses(),10,1);
-        die('test');
+        return $this->render('investment-view',['model' => $model]);
     }
 }
